@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require 'kosserver/server'
+
+KOSServer::Server.run!
