@@ -66,7 +66,7 @@ describe 'LDP Test Suite', integration: true do
     it_behaves_like 'ldp test suite' do
       let(:server_url)         { @server }
       let(:skipped_tests)      { @skipped_tests }
-      let(:test_suite_options) { { 'non-rdf' => true, inderect: true } }
+      let(:test_suite_options) { { 'non-rdf' => true, indirect: true } }
     end
   end
 end

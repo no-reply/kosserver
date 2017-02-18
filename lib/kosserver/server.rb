@@ -6,19 +6,20 @@ module KOSServer
   class Server < Sinatra::Base
     use Rack::LDP::ContentNegotiation
     use Rack::LDP::Errors
-    use Rack::LDP::Responses
     use Rack::ConditionalGet
+    use Rack::LDP::Responses
     use Rack::LDP::Requests
+    use Rack::Memento
+
+    RDF::LDP::Memento.use_memento!
 
     configure { set :repository, RDF::Repository.new }
 
     get '/' do
-      begin
-        RDF::LDP::Resource.find(RDF::URI(request.url), settings.repository)
-      rescue RDF::LDP::NotFound
-        RDF::LDP::Container.new(RDF::URI(request.url), settings.repository)
-          .create(StringIO.new, 'text/turtle')
-      end
+      RDF::LDP::Container.new(RDF::URI(request.url), settings.repository)
+        .create(StringIO.new, 'text/turtle') if settings.repository.empty?
+
+      RDF::LDP::Resource.find(RDF::URI(request.url), settings.repository)
     end
 
     get '/*' do
