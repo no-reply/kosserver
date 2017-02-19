@@ -57,7 +57,13 @@ describe KOSServer do
     let(:concept_statements) do
       [RDF::Statement(RDF::URI(nil),
                       RDF::Vocab::FOAF.primaryTopic,
-                      concept_uri)]
+                      concept_uri),
+       RDF::Statement(RDF::URI(nil),
+                      RDF::Vocab::LDP.membershipResource,
+                      concept_uri),
+       RDF::Statement(RDF::URI(nil),
+                      RDF::Vocab::LDP.insertedContentRelation,
+                      RDF::Vocab::FOAF.primaryTopic)]
     end
 
     before do
@@ -82,7 +88,7 @@ describe KOSServer do
          'HTTP_LINK' => "#{KOSServer::KOP.SchemeContainer.to_base};rel=\"type\""}
       end
 
-      it 'creates a concept scheme' do
+      it 'creates a resource' do
         post '/', scheme_content, scheme_headers
         expect(last_response.status).to eq 201
       end
@@ -115,7 +121,7 @@ describe KOSServer do
 
       it 'adds a top concept' do
         get scheme_slug
-
+        
         graph = RDF::Graph.new <<
           RDF::Reader.for(content_type: last_response.headers['Content-Type'])
             .new(last_response.body)
@@ -129,7 +135,41 @@ describe KOSServer do
       describe 'POSTing a narrower concept' do
         include_context 'with top concept'
 
-        it 'adds a narrower concept'
+        let(:narrower_content) { narrower_graph.dump(:ttl) }
+        let(:narrower_ctype)   { 'text/turtle' }
+        let(:narrower_graph)   { RDF::Graph.new.insert(*narrower_statements) }
+        let(:narrower_slug)    { 'next' }
+        let(:narrower_uri)     { RDF::URI('http://example.com/my_concept/next') }
+
+        let(:narrower_statements) do
+          [RDF::Statement(RDF::URI(nil),
+                          RDF::Vocab::FOAF.primaryTopic,
+                          narrower_uri),
+           RDF::Statement(RDF::URI(nil),
+                          RDF::Vocab::LDP.membershipResource,
+                          narrower_uri),
+           RDF::Statement(RDF::URI(nil),
+                          RDF::Vocab::LDP.insertedContentRelation,
+                          RDF::Vocab::FOAF.primaryTopic)]
+        end
+
+        it 'adds a narrower concept' do
+          post "#{scheme_slug}/#{concept_slug}", 
+               narrower_content,
+               'CONTENT_TYPE' => narrower_ctype,
+               'HTTP_SLUG'    => narrower_slug
+
+          get "#{scheme_slug}/#{concept_slug}"
+
+          graph = RDF::Graph.new <<
+            RDF::Reader.for(content_type: last_response.headers['Content-Type'])
+              .new(last_response.body)
+
+          expect(graph)
+            .to have_statement RDF::Statement(concept_uri,
+                                              RDF::Vocab::SKOS.narrower,
+                                              narrower_uri)
+        end
       end
     end
   end
