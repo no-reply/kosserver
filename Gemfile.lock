@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: git://github.com/ruby-rdf/rdf-ldp.git
-  revision: a0385b95a75244078c941e43293734baea5895a5
+  revision: a5001c09fb779e9600b8bbed8fc405ad2bdb719d
   branch: feature/memento
   specs:
     rdf-ldp (0.9.2)
@@ -251,6 +251,7 @@ GEM
       rdf (~> 2.0)
     thor (0.19.4)
     tilt (2.0.6)
+    timecop (0.8.1)
     webmock (2.3.2)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
@@ -276,6 +277,7 @@ DEPENDENCIES
   rdf-ldp!
   rdf-spec (~> 2.0)
   rspec (~> 3.0)
+  timecop
   yard (~> 0.8)
 
 BUNDLED WITH

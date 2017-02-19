@@ -30,6 +30,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency     'rdf-blazegraph', '>= 0.0.2'
 
   gem.add_development_dependency 'rake'
+  gem.add_development_dependency 'timecop'
   gem.add_development_dependency 'rdf-spec',    '~> 2.0'
   gem.add_development_dependency 'rspec',       '~> 3.0'
   gem.add_development_dependency 'rack-test',   '~> 0.6'

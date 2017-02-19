@@ -14,6 +14,11 @@ describe KOSServer::ConceptScheme do
                      kos_uri)
   end
 
+  # TODO: Resolve IndirectContainer specs
+  it_behaves_like 'an RDFSource' do
+    subject { described_class.new(uri) }
+  end
+
   it 'is registered' do
     expect(RDF::LDP::InteractionModel.for(described_class.to_uri))
       .to be described_class
