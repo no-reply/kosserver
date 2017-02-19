@@ -7,6 +7,8 @@ require 'kosserver/server'
 require 'rdf/spec'
 require 'rdf/spec/matchers'
 
+require 'pry' unless ENV['CI']
+
 Dir['./spec/support/**/*.rb'].each { |f| require f }
 
 RSpec.configure do |config|

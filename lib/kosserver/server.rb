@@ -16,7 +16,8 @@ module KOSServer
     configure { set :repository, RDF::Repository.new }
 
     get '/' do
-      RDF::LDP::Container.new(RDF::URI(request.url), settings.repository)
+      RDF::LDP::Container
+        .new(RDF::URI(request.url), settings.repository)
         .create(StringIO.new, 'text/turtle') if settings.repository.empty?
 
       RDF::LDP::Resource.find(RDF::URI(request.url), settings.repository)
