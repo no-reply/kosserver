@@ -8,6 +8,11 @@ module KOSServer
          label:      "Scheme Container".freeze,
          subClassOf: ["ldp:IndirectContainer".freeze],
          type:       "rdfs:Class".freeze
+
+    term :ConceptContainer,
+         label:      "Concept Container".freeze,
+         subClassOf: ["ldp:IndirectContainer".freeze],
+         type:       "rdfs:Class".freeze
   end
 end
 

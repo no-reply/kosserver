@@ -24,6 +24,18 @@ module KOSServer
   #   Definition of LDP Indirect Container
   class ConceptScheme < RDF::LDP::IndirectContainer
     ##
+    # @see RDF::LDP::Resource.interaction_model
+    def self.interaction_model(link_header)
+      models = LinkHeader.parse(link_header)
+        .links
+        .select { |link| link['rel'].casecmp 'type' }
+
+      return Concept if models.empty?
+
+      super
+    end
+
+    ##
     # @see RDF::LDP::Container.to_uri
     def self.to_uri
       KOP.SchemeContainer
@@ -37,7 +49,6 @@ module KOSServer
           transaction.query([subject_uri, MEMBERSHIP_RESOURCE_URI, :o]).empty? ||
           !transaction.query([subject_uri, RELATION_TERMS.first, :o]).empty?
         transaction.insert(default_membership_resource_statement)
-        
       end
     end
 

@@ -6,8 +6,8 @@ require 'rack/memento'
 require 'rdf/ldp/memento'
 
 require 'kosserver/vocabulary'
+require 'kosserver/concept'
 require 'kosserver/concept_scheme'
-
 
 module KOSServer
 end

@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'kosserver'
 require 'sinatra/base'
 require 'rack/ldp'
